@@ -1,0 +1,162 @@
+﻿@model HeaderLinksModel
+@using System.Text.Encodings.Web
+@using Microsoft.AspNetCore.Http
+@using Nop.Core.Infrastructure
+@inject IHttpContextAccessor httpContextAccessor
+
+<div class="header-links">
+    <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item dropdown search-box-dropdown">
+            <a class="nav-link" href="javascript:void(0)" id="dropdownSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <strong class="icon-search"></strong> <span class="search-text-box"> Search </span>  </a>
+            <div class="dropdown-menu search-box store-search-box" aria-labelledby="dropdownSearch">
+                @await Component.InvokeAsync(typeof(SearchBoxViewComponent))
+            </div>
+        </li>
+
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderLinksBefore, additionalData = Model })
+        @if (Model.IsAuthenticated)
+        {
+            //var workContext = EngineContext.Current.Resolve<Nop.Core.IWorkContext>();
+            <li class="nav-item user-header-items dropdown dropdown-login">
+
+                <a class="nav-link" href="javascript:void(0)" data-toggle="dropdown" id="dropdownLogin" aria-haspopup="true" aria-expanded="false">  <strong class="icon-user"></strong> <span class="login-text-box"> @T("NopStation.Theme.Zwart.Account.User") </span>  </a>
+                <div class="dropdown-menu search-box store-search-box user-login-box" aria-labelledby="dropdownLogin">
+
+                    <div class="login-nav-box text-center w-100"> <a class="nav-link d-block border-bottom-0" href="@Url.RouteUrl(NopRouteNames.General.CUSTOMER_INFO)"> <strong class="icon-user"></strong> @T("Account.MyAccount") </a> </div>
+
+                    <div class="login-nav-box-2 text-center w-100"> <a class="nav-link d-block border-bottom-0" href="@Url.RouteUrl(NopRouteNames.Standard.LOGOUT)"> <strong class="fa fa-sign-out"></strong> @T("Account.Logout")</a> </div>
+
+                </div>
+            </li>
+@*             <li class="nav-item"> <a class="nav-link" href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")@Model.CustomerName</a></li>
+        <li class="nav-item"> <a class="nav-link" href="@Url.RouteUrl("Logout")">@T("Account.Logout")</a></li> *@
+        }
+        else
+        {
+            var customerModelFactory = EngineContext.Current.Resolve<Nop.Web.Factories.ICustomerModelFactory>();
+            var model =await customerModelFactory.PrepareLoginModelAsync(null);
+            
+            <li class="nav-item dropdown user-header-items dropdown-login">
+
+                <a class="nav-link login-link" href="javascript:void(0)" data-toggle="dropdown" id="dropdownLogin" aria-haspopup="true" aria-expanded="false">  <strong class="icon-user"> </strong> <span class="login-text-box"> Login </span> </a>
+                <div class="dropdown-menu search-box store-search-box user-login-box" aria-labelledby="dropdownLogin">
+
+                    @*<form class=" w-100 text-left" method="post" action="login" novalidate="novalidate">*@
+                    <form class="w-100 text-left" asp-action="Login" asp-controller="Customer" asp-route-returnurl="@httpContextAccessor.HttpContext.Request.Path" method="post">
+
+                        <div class="form-fields">
+                            @if (model.UsernamesEnabled)
+                            {
+                                <div class="inputs">
+                                    <input class="email w-100 valid" placeholder="@T("account.login.fields.Username")" autofocus="autofocus" type="text" data-val="true" data-val-required="@T("account.fields.username.required")" id="customer-username" name="Username" aria-invalid="false">
+                                    <span class="field-validation-valid" data-valmsg-for="Username" data-valmsg-replace="true"></span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="inputs">
+                                    <input class="email w-100 valid" placeholder="@T("account.login.fields.email")" autofocus="autofocus" type="email" data-val="true" data-val-email="@T("common.wrongemail")" data-val-required="@T("Account.Login.Fields.Email.Required")" id="customer-email" name="Email" value="" aria-describedby="Email-error" aria-invalid="false">
+                                    <span class="field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+                                </div>
+                            }
+
+                            <div class="inputs">
+                                <input class="password w-100 valid" placeholder="@T("account.login.fields.password")" type="password" id="customer-password" name="Password" aria-invalid="false">
+                                <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                            </div>
+
+                            <div class=" forget-pass ">
+                                <input class="custom-checkbox" id="checkbox-box-5" type="checkbox" data-val="true" data-val-required="The Remember me? field is required." name="RememberMe" value="true">
+                                <label for="checkbox-box-5" class="mr-1"> <span class="remember-text"> @T("Account.Login.Fields.RememberMe")</span> </label>
+
+                                <span class="forgot-password float-right">
+                                    <a href="/passwordrecovery">@T("Account.Login.ForgotPassword")</a>
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="login-nav-box text-center w-100 mt-3">
+                            <button class="nav-link login-button d-block border-bottom-0 w-100" type="submit" value=""><strong class="icon-user"></strong> @T("Account.Login")</button>
+                        </div>
+                    </form>
+                    <div class="login-nav-box text-center w-100 d-none"> <a class="nav-link d-block border-bottom-0" href="@Url.RouteUrl(NopRouteNames.General.LOGIN)">  <strong class="icon-user"></strong>  @T("Account.Login") </a> </div>
+                    <div class="login-nav-box-2 text-center w-100"> <a class="nav-link d-block border-bottom-0" href="@Url.RouteUrl(NopRouteNames.Standard.REGISTER)"> <strong class="fa fa-user-plus"></strong> @T("Account.Register")</a> </div>
+                </div>
+            </li>
+
+        }
+
+
+
+
+        @if (Model.AllowPrivateMessages)
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.RouteUrl(NopRouteNames.Standard.PRIVATE_MESSAGES, new { tab = "" })">
+                    <span class="inbox-label">@T("PrivateMessages.Inbox")</span>
+                    <span class="inbox-unread">@Model.UnreadPrivateMessages</span>
+                </a>
+            </li>
+        }
+
+        @if (Model.WishlistEnabled)
+        {
+            <li class="nav-item">
+                <a class="nav-link ico-cart " href="@Url.RouteUrl(NopRouteNames.General.WISHLIST)">
+                    <span class="wishlist-label"> <strong class="icon-love"></strong> </span>
+                    <span class="wishlist-qty">@T("Wishlist.HeaderQuantity", Model.WishlistItems)</span>
+                </a>
+            </li>
+        }
+
+        @if (Model.ShoppingCartEnabled)
+        {
+            <li class="nav-item" id="topcartlink">
+                @*<a class="nav-link d-block d-md-none ico-cart" href="@Url.RouteUrl("ShoppingCart")">
+                    <span class="cart-label">@T(" ") <strong class="icon-cart"></strong> </span>
+                    <span class="cart-qty cart-quantity"> @T("ShoppingCart.HeaderQuantity", Model.ShoppingCartItems) </span>
+                </a>*@
+                <a class="nav-link d-block" href="javascript:void(0)">
+                    <span class="cart-label"> <strong class="icon-cart"></strong> </span>
+                    <span class="cart-qty cart-quantity"> @T("ShoppingCart.HeaderQuantity", Model.ShoppingCartItems) </span>
+                </a>
+            </li>
+        }
+
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderLinksAfter, additionalData = Model })
+    </ul>
+    @await Component.InvokeAsync(typeof(FlyoutShoppingCartViewComponent))
+
+    @if (Model.AllowPrivateMessages && !string.IsNullOrEmpty(Model.AlertMessage))
+    {
+        //new private message notification
+    <script asp-location="Footer">
+            $(document).ready(function () {
+                displayPopupNotification('@Html.Raw(JavaScriptEncoder.Default.Encode(Model.AlertMessage))', 'success', false);
+            });
+    </script>
+    }
+    @if (Model.ShoppingCartEnabled)
+    {
+    <script asp-location="Footer">
+        $(document).ready(function () {
+            $('header').on('click', '#topcartlink', function (e) {
+                e.stopPropagation();
+                var flyout = $('#flyout-cart');
+                if (flyout.hasClass('active'))
+                    flyout.removeClass('active');
+                else
+                    flyout.addClass('active');
+            });
+
+            $("body").click(function(e){
+                var $target = $(e.target);
+                if(!$target.parents().is("#flyout-cart") && !$target.is("#flyout-cart")){
+                    $("#flyout-cart").removeClass("active");
+                }
+            });
+        });
+    </script>
+    }
+</div>

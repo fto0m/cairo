@@ -1,0 +1,84 @@
+﻿@model MiniShoppingCartModel
+@using Nop.Core.Domain.Catalog
+
+<div class="flyout-cart" id="flyout-cart">
+    <div class="mini-shopping-cart">
+        <div class="container">
+
+            @if (Model.TotalProducts > 0)
+            {
+            <div class="items">
+                @for (var i = 0; i < Model.Items.Count; i++)
+                    {
+                        var item = Model.Items[i];
+                <div class="item row flex-nowrap justify-content-between align-items-center border-bottom @(i == 0 ? "first" : null)">
+                    @if (Model.ShowProductImages)
+                            {
+                    <div class="col-3 picture text-left pl-0">
+                                    <a href="@(await NopUrl.RouteGenericUrlAsync<Product>(new { SeName = item.ProductSeName }))" title="@item.Picture.Title">
+                            <img alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" title="@item.Picture.Title" />
+                        </a>
+                    </div>
+                            }
+                    <div class="product-name col-5 p-0 ">
+                                <a href="@(await NopUrl.RouteGenericUrlAsync<Product>(new { SeName = item.ProductSeName }))">@item.ProductName</a>
+                        @*@if (!string.IsNullOrEmpty(item.AttributeInfo))
+                            {
+                                <div class="attributes">
+                                    @Html.Raw(item.AttributeInfo)
+                                </div>
+                            }*@
+
+                    </div>
+                    <div class="col-4 pr-0 product-price-quantity">
+                        <div>@T("ShoppingCart.Mini.UnitPrice"): <span>@item.UnitPrice</span></div>
+                        <div>@T("ShoppingCart.Mini.Quantity"): <span>@item.Quantity</span></div>
+                    </div>
+                </div>
+                    }
+            </div>
+            <div class="row justify-content-between align-items-center counts-totals">
+                <div class="col-6 count">
+                    @if (Model.TotalProducts == 0)
+                        {
+                           @T("ShoppingCart.Mini.NoItems")
+                        }
+                        else
+                        {
+                            @Html.Raw(string.Format(T("ShoppingCart.Mini.ItemsText").Text, $"<a href=\"{Url.RouteUrl(NopRouteNames.General.CART)}\">{string.Format(T("ShoppingCart.Mini.Items").Text, Model.TotalProducts)}</a>"))
+                        }
+                </div>
+                <div class="col-6 totals text-right">
+                    @T("ShoppingCart.Totals.SubTotal"): <strong>@Model.SubTotal</strong>
+                </div>
+            </div>
+            <div class="row">
+                <div class="buttons col-12 p-0">
+                    @if (Model.DisplayShoppingCartButton)
+                        {
+                            <input type="button" value="@T("ShoppingCart.Mini.ViewCart")" class="button-1 cart-button w-100" onclick="setLocation('@(Url.RouteUrl(NopRouteNames.General.CART))')" />
+
+                        }
+                    @if (Model.DisplayCheckoutButton)
+                        {
+                            var checkoutUrl = "";
+                            if (Model.AnonymousCheckoutAllowed && Model.CurrentCustomerIsGuest)
+                            {
+                                checkoutUrl = Url.RouteUrl(NopRouteNames.Standard.LOGIN_CHECKOUT_AS_GUEST, new { returnUrl = Url.RouteUrl(NopRouteNames.General.CART) });
+                            }
+                            else
+                            {
+                                checkoutUrl = Url.RouteUrl(NopRouteNames.Standard.CHECKOUT);
+                            }
+                    <input type="button" value="@T("Checkout.Button")" class="button-1 checkout-button" onclick="setLocation('@checkoutUrl')" />
+                        }
+                </div>
+            </div>
+            }
+            else
+            {
+            <p class="h6 my-3 tex-center">@T("ShoppingCart.Mini.NoItems")</p>
+            }
+        </div>
+    </div>
+</div>

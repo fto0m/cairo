@@ -1,0 +1,57 @@
+﻿@model CategoryNavigationModel
+
+@if (Model.Categories.Count > 0)
+{
+    <div class="categories-container mb-3">
+        <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+            <div class="block block-category-navigation m-0">
+                <div class="border-0" role="tab" id="headingOne1">
+                    <div class="border-0 p-0" role="tab" id="headingOnenew">
+                        <h5 class="mb-0 collapsed" data-toggle="collapse" data-parent="#accordionEx" data-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1"> 
+                        <strong>@T("Categories")</strong>  <i class="fa fa-angle-down rotate-icon float-right"></i> </h5>
+                    </div>
+                </div>
+
+                <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                    <div class="card-body">
+
+                        <ul class="categories-list m-0 list-unstyled">
+                            @foreach (var category in Model.Categories)
+                            {
+                                var categoryLineModel = new CategoryNavigationModel.CategoryLineModel
+                                {
+                                    CurrentCategoryId = Model.CurrentCategoryId,
+                                    Category = category
+                                };
+                                @await Html.PartialAsync("_CategoryLine.Navigation", categoryLineModel);
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*@if (Model.Categories.Count > 0)
+    {
+        <div class="block block-category-navigation">
+            <div class="title">
+                <strong>@T("Categories")</strong>
+            </div>
+            <div class="listbox">
+                <ul class="list">
+                    @foreach (var category in Model.Categories)
+                    {
+                        var categoryLineModel = new CategoryNavigationModel.CategoryLineModel
+                        {
+                            CurrentCategoryId = Model.CurrentCategoryId,
+                            Category = category
+                        };
+                        @await Html.PartialAsync("_CategoryLine.Navigation", categoryLineModel)
+                    }
+                </ul>
+            </div>
+        </div>
+    }*@

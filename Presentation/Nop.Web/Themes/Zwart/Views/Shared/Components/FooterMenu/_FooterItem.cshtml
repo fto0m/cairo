@@ -1,0 +1,22 @@
+@model MenuItemModel
+
+@* Render menu item with support for nested children *@
+<li>
+    @if (!string.IsNullOrEmpty(Model.Url))
+    {
+        <a href="@Model.Url">@Model.Title</a>
+    }
+    else
+    {
+        @Model.Title
+    }
+    @if (Model.ChildrenItems != null && Model.ChildrenItems.Any())
+    {
+        <ul class="footer-nav-submenu">
+            @foreach (var childItem in Model.ChildrenItems)
+            {
+                @await Html.PartialAsync("_FooterItem.cshtml", childItem)
+            }
+        </ul>
+    }
+</li>

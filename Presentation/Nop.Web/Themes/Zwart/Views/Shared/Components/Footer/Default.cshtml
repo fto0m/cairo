@@ -1,0 +1,150 @@
+@model FooterModel
+
+@using Nop.Core
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Domain.Topics
+
+@inject IWorkContext workContext
+@inject IStoreContext storeContext
+@inject Nop.Services.Configuration.ISettingService settingService
+@inject Nop.Services.Media.IPictureService pictureService
+
+@{
+    var store = await storeContext.GetCurrentStoreAsync();
+    var hideDesignedByNopStation = await settingService.GetSettingByKeyAsync<bool>("ZwartSettings.HideDesignedByNopStationAtFooter", storeId: store.Id, loadSharedValueIfNotFound: true);
+}
+<div class="footer-container">
+
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = "before_footer" })
+
+    <div class="custom-container-fluid footer-nav-content py-5">
+        
+            <div class="row no-gutters">
+                @await Component.InvokeAsync(typeof(FooterMenuViewComponent))
+            <div class="footer-newsletter-wrapper col-lg-4 col-md-6 col-sm-12 col-12">
+                <div class="footer-block w-100">
+                    @await Component.InvokeAsync(typeof(NewsLetterBoxViewComponent))
+
+                </div>
+            </div>
+            </div>
+            
+
+            
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.Footer, additionalData = Model })
+        <div class="mt-5 mobile-height">
+            <div class="social">
+                @await Component.InvokeAsync(typeof(SocialButtonsViewComponent))
+            </div>
+        </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="custom-container-fluid copyright-container p-3">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <div class="copyright-text">
+                    <span class="footer-disclaimer"> @T("Content.CopyrightNotice", DateTime.Now.Year, Model.StoreName) </span>
+                    @if (Model.DisplayTaxShippingInfoFooter)
+                    {
+                        var inclTax = await workContext.GetTaxDisplayTypeAsync() == TaxDisplayType.IncludingTax;
+                        <span class="footer-tax-shipping">
+                            @T(inclTax ? "Footer.TaxShipping.InclTax" : "Footer.TaxShipping.ExclTax", await NopUrl.RouteTopicUrlAsync("shippinginfo"))
+                        </span>
+                    }
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                @if (!Model.HidePoweredByNopCommerce)
+                {
+                    <div class="footer-powered-by text-center">
+                        @*Would you like to remove the "Powered by nopCommerce" link in the bottom of the footer?
+                            Please find more info at https://www.nopcommerce.com/copyrightremoval.aspx*@
+                        Powered by <a href="@(OfficialSite.Main)" target="_blank" @(Model.IsHomePage ? string.Empty : "rel=nofollow")>nopCommerce</a>
+                    </div>
+                }
+                @await Component.InvokeAsync(typeof(StoreThemeSelectorViewComponent))
+            </div>
+
+            <div class="col-md-4">
+                <div class="payment-icon text-right">
+                    @{
+                        var showSupportedCardsPictureAtPageFooter = await settingService.GetSettingByKeyAsync<bool>("ZwartSettings.ShowSupportedCardsPictureAtPageFooter");
+                        if (showSupportedCardsPictureAtPageFooter)
+                        {
+                            var pictureId = await settingService.GetSettingByKeyAsync<int>("ZwartSettings.SupportedCardsPictureId");
+                            var pictureUrl = await pictureService.GetPictureUrlAsync(pictureId);
+                            <img src="@pictureUrl" />
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="powered-by">
+        @if (!hideDesignedByNopStation)
+        {
+            <div class="footer-powered-by">
+                <div>
+                    Designed By
+                    <a href="https://www.nop-station.com/ecommerce-development-agency-uk" target="_blank">
+                        <img class="nopstation-logo"
+                             alt="Designed by nopStation : Your Trusted ecommerce agency in uk"
+                             title="Designed by nopStation"
+                             src="/Themes/Zwart/Content/images/designed-by-nopstation.png"
+                             width="98" height="22">
+                    </a>
+                </div>
+                <div class="seo-text">
+                    Your Trusted
+                    <a href="https://www.nop-station.com/ecommerce-development-agency-uk" target="_blank">
+                        ecommerce agency in uk
+                    </a>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<a href="#" class="scrollup border-0" style=""> <i class="fa fa-angle-double-up" aria-hidden="true"></i> </a>
+
+<script asp-location="Footer">
+    $(document).ready(function () {
+        $('.footer-block .title').on('click', function () {
+            var e = window, a = 'inner';
+            if (!('innerWidth' in window)) {
+                a = 'client';
+                e = document.documentElement || document.body;
+            }
+            var result = { width: e[a + 'Width'], height: e[a + 'Height'] };
+            if (result.width < 769) {
+                $(this).siblings('.list').slideToggle('slow');
+            }
+        });
+    });
+</script>
+
+<script asp-location="Footer">
+    $(document).ready(function () {
+        $('.block .title').on('click', function () {
+            var e = window, a = 'inner';
+            if (!('innerWidth' in window)) {
+                a = 'client';
+                e = document.documentElement || document.body;
+            }
+            var result = { width: e[a + 'Width'], height: e[a + 'Height'] };
+            if (result.width < 1001) {
+                $(this).siblings('.listbox').slideToggle('slow');
+            }
+        });
+    });
+</script>

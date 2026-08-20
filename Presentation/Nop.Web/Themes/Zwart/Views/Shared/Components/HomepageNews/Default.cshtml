@@ -1,0 +1,38 @@
+﻿@model HomepageNewsItemsModel
+
+@using Nop.Core.Domain.News
+
+@if (Model.NewsItems.Count > 0)
+{
+    <div class="blogs-container custom-container-fluid py-5">
+        <div class="no-gutters">
+            <div class="blogs-box wow fadeInUp">
+                <h2 class="text-uppercase mb-3">  <span>  @T("News")  </span> </h2>
+                <div class="blog-content-box mb-3">
+                    <div class="row news-items">
+                        @foreach (var item in Model.NewsItems)
+                        {
+                            <div class="col-md-4 news-item">
+                                <div class="p-4 border">
+                                    <div class="news-head">
+                                        <h5 class="mb-0"> <a href="@(await NopUrl.RouteGenericUrlAsync<NewsItem>(new { SeName = item.SeName }))"> @item.Title </a> </h5>
+                                        <p class="text-black-50"> @item.CreatedOn.ToString("D") </p>
+                                    </div>
+                                    <p class="text-justify">
+                                        @Html.Raw(item.Short)
+                                        <div class="read-mre-box text-capitalize pt-2">
+                                            <a href="@(await NopUrl.RouteGenericUrlAsync<NewsItem>(new { SeName = item.SeName }))" class="read-more">@T("News.MoreInfo")</a>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="read-mre-box w-100 text-center">
+                        <a href="@Url.RouteUrl(NopRouteNames.General.NEWS)">@T("News.ViewAll")</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

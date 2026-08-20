@@ -1,0 +1,5 @@
+@model MenuItemModel
+
+<li class="nav-item first-lebel-nav @Model.CssClass">
+    <a class="nav-link" href="@(string.IsNullOrEmpty(@Model.Url) ? "#" : @Model.Url)">@Model.Title</a>
+</li>

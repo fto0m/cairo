@@ -1,0 +1,104 @@
+@using Nop.Core.Domain.Menus;
+@model MenuModel
+
+@{
+    var supportRtl = await Html.ShouldUseRtlThemeAsync();
+}
+
+<link rel="stylesheet" href="~/Themes/Zwart/Content/css/megamenu.css" />
+@if (supportRtl)
+{
+    <link rel="stylesheet" href="~/Themes/Zwart/Content/css/megamenu.rtl.css" />
+}
+
+@* Desktop Menu - Bootstrap Dropdown Structure *@
+<div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+    <ul class="navbar-nav flex-wrap">
+        <li class="nav-item nav-products dropdown">
+            <ul class="navbar-nav align-items-center">
+                @foreach (var menuItem in Model.Items)
+                {
+                    @if (menuItem.ChildrenItems.Any())
+                    {
+                        @switch (menuItem.Template)
+                        {
+                            case MenuItemTemplate.Grid:
+                                @* Grid view - Manufacturers style *@
+                                @await Html.PartialAsync("_MenuItem.Grid.cshtml", menuItem)
+                                break;
+                            default:
+                                @* List view - Categories style with images and sublists *@
+                                @await Html.PartialAsync("_MenuItem.List.cshtml", menuItem)
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_MenuItem.cshtml", menuItem)
+                    }
+                }
+            </ul>
+        </li>
+    </ul>
+</div>
+
+@* Mobile Menu - Left Sidebar *@
+<div class="mm-navbar closed">
+    <button type="button" class="btn-close-menu" id="close-menu" onclick="closeMobileMenu()">
+        <span class="icon icon-close">×</span>
+    </button>
+    <ul class="mm-navbar-nav">
+        @foreach (var menuItem in Model.Items)
+        {
+            @if (menuItem.ChildrenItems.Any())
+            {
+                <li class="mm-nav-item has-submenu @menuItem.CssClass">
+                    <div class="mm-nav-link-wrapper">
+                        <a class="mm-nav-link" href="@(string.IsNullOrEmpty(menuItem.Url) ? "#" : menuItem.Url)">
+                            <span>@menuItem.Title</span>
+                        </a>
+                        <div class="sublist-toggle"></div>
+                    </div>
+                    <ul class="sublist first-level">
+                        @foreach (var item in menuItem.ChildrenItems)
+                        {
+                            <li class="mm-nav-item @(item.ChildrenItems.Any() ? "has-submenu" : "")">
+                                <div class="mm-nav-link-wrapper">
+                                    <a class="mm-nav-link" href="@item.Url">
+                                        <span>@item.Title</span>
+                                    </a>
+                                    @if (item.ChildrenItems.Any())
+                                    {
+                                        <div class="sublist-toggle"></div>
+                                    }
+                                </div>
+                                @if (item.ChildrenItems.Any())
+                                {
+                                    <ul class="sublist">
+                                        @foreach (var subItem in item.ChildrenItems)
+                                        {
+                                            <li class="mm-nav-item">
+                                                <a class="mm-nav-link" href="@subItem.Url">
+                                                    <span>@subItem.Title</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li class="mm-nav-item @menuItem.CssClass">
+                    <a class="mm-nav-link" href="@(string.IsNullOrEmpty(menuItem.Url) ? "#" : menuItem.Url)">
+                        <span>@menuItem.Title</span>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</div>
+

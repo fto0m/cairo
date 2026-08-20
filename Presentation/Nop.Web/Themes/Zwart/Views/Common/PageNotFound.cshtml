@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "_ColumnsOne";
+
+    //title
+    NopHtml.AddTitleParts(T("PageTitle.PageNotFound").Text);
+    //page class
+    NopHtml.AppendPageCssClassParts("html-not-found-page");
+}
+
+@section heading {
+
+    <div class="products-list-header text-center text-uppercase">
+        <h1 class="pt-3"> @T("PageTitle.PageNotFound") </h1>
+    </div>
+
+}
+
+<div class="body-container mt-0">
+    <div class="page not-found-page">
+        @*<div class="page-title">
+            <h1>@T("PageTitle.PageNotFound")</h1>
+        </div>*@
+        <div class="page-body">
+            <div class="custom-container-fluid">
+                @*@await Component.InvokeAsync(typeof(TopicBlockViewComponent), new { systemName = "PageNotFound" })*@
+                <p class="text-center">
+                    <img src="~/Themes/zwart/Content/images/Page-not-found.jpg" />
+                </p>
+             </div>
+            </div>
+    </div>
+</div>

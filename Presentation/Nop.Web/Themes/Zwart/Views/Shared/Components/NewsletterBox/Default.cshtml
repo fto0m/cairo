@@ -1,0 +1,129 @@
+﻿@model NewsLetterBoxModel
+<div class="newsletter">
+   
+    <div class="footer-nav-header">    
+        <div class="icon">
+            <p class="mb-0">
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope-open" class="svg-inline--fa fa-envelope-open fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor" d="M512 464c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V200.724a48 48 0 0 1 18.387-37.776c24.913-19.529 45.501-35.365 164.2-121.511C199.412 29.17 232.797-.347 256 .003c23.198-.354 56.596 29.172 73.413 41.433 118.687 86.137 139.303 101.995 164.2 121.512A48 48 0 0 1 512 200.724V464zm-65.666-196.605c-2.563-3.728-7.7-4.595-11.339-1.907-22.845 16.873-55.462 40.705-105.582 77.079-16.825 12.266-50.21 41.781-73.413 41.43-23.211.344-56.559-29.143-73.413-41.43-50.114-36.37-82.734-60.204-105.582-77.079-3.639-2.688-8.776-1.821-11.339 1.907l-9.072 13.196a7.998 7.998 0 0 0 1.839 10.967c22.887 16.899 55.454 40.69 105.303 76.868 20.274 14.781 56.524 47.813 92.264 47.573 35.724.242 71.961-32.771 92.263-47.573 49.85-36.179 82.418-59.97 105.303-76.868a7.998 7.998 0 0 0 1.839-10.967l-9.071-13.196z"></path>
+                </svg>
+            </p>
+        </div>
+        
+        <div class="newslater-form">
+            <h5 class="text-uppercase font-weight-bold"> <strong>@T("Newsletter.Title")</strong> </h5>
+            <div class="newsletter-subscribe" id="newsletter-subscribe-block">
+                <div class="newsletter-email">
+                    <input asp-for="NewsLetterEmail" id="newsletter-email" class="newsletter-subscribe-text" placeholder=@T("Newsletter.Email.Placeholder") aria-label="@T("Newsletter.Subscribe")" />
+                    <button type="button" value="@T(Model.AllowToUnsubscribe ? "Newsletter.Options.Send" : "Newsletter.Options.Subscribe")" id="newsletter-subscribe-button" class="button-1 newsletter-subscribe-button"> subscribe </button>
+                    @if (Model.AllowToUnsubscribe)
+                    {
+                        <div class="options">
+                            <span class="subscribe">
+                                <input id="newsletter_subscribe" type="radio" value="newsletter_subscribe" name="newsletter_block" checked="checked" />
+                                <label for="newsletter_subscribe"> @T("Newsletter.Options.Subscribe") </label>
+                            </span>
+                            <span class="unsubscribe">
+                                <input id="newsletter_unsubscribe" type="radio" value="newsletter_unsubscribe" name="newsletter_block" />
+                                <label for="newsletter_unsubscribe"> @T("Newsletter.Options.Unsubscribe")</label>
+                            </span>
+                        </div>
+                    }
+                    @if (Model.DisplayCaptcha)
+                    {
+                        <nop-captcha />
+                    }
+                </div>
+                <div class="newsletter-validation">
+                    <span id="subscribe-loading-progress" style="display: none;" class="please-wait">@T("Common.Wait")</span>
+                    <span asp-validation-for="NewsLetterEmail"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+        <div class="newsletter-result" id="newsletter-result-block"></div>
+        <script asp-location="Footer">
+        async function getCaptchaToken(action, reCaptchaPublicKey, isReCaptchaV3) {
+            var recaptchaToken = '';
+            if (isReCaptchaV3) {
+                grecaptcha.ready(() => {
+                    grecaptcha.execute(reCaptchaPublicKey, { action: action }).then((token) => {
+                        recaptchaToken = token;
+                    });
+                });
+
+                while (recaptchaToken == '') {
+                    await new Promise(t => setTimeout(t, 100));
+                }
+            } else {
+                recaptchaToken = $('#newsletter-subscribe-block .captcha-box textarea[name="g-recaptcha-response"').val();
+            }
+            
+            return recaptchaToken;
+        }
+
+        async function newsletter_subscribe(subscribe) {
+            var subscribeProgress = $("#subscribe-loading-progress");
+            subscribeProgress.show();
+            var captchaTok = '';
+            if (@Model.DisplayCaptcha.ToString().ToLowerInvariant() == true) {
+                captchaTok = await getCaptchaToken('SubscribeNewsletter', '@Model.ReCaptchaPublicKey', @Model.IsReCaptchaV3.ToString().ToLowerInvariant());
+            }
+            var postData = {
+                subscribe: subscribe,
+                email: $("#newsletter-email").val(),
+                'g-recaptcha-response': captchaTok
+            };
+            addAntiForgeryToken(postData);
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "@(Url.RouteUrl(NopRouteNames.Ajax.SUBSCRIBE_NEWSLETTER))",
+                data: postData,
+                success: function(data, textStatus, jqXHR) {
+                    subscribeProgress.hide();
+                    $("#newsletter-result-block").html(data.Result);
+                    if (data.Success) {
+                        $('#newsletter-subscribe-block').hide();
+                        $('#newsletter-result-block').show();
+                    } else {
+                        $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Failed to subscribe.');
+                    subscribeProgress.hide();
+                },
+                complete: function(jqXHR, textStatus) {
+                    subscribeProgress.hide();
+                }
+            });
+        }
+
+        $(function() {
+            $('#newsletter-subscribe-button').on('click', function () {
+                @if (Model.AllowToUnsubscribe)
+                {
+                    <text>if ($('#newsletter_subscribe').is(':checked')) {
+                    newsletter_subscribe('true');
+                } else {
+                    newsletter_subscribe('false');
+                }</text>
+                }
+                else
+                {
+                    <text>newsletter_subscribe('true');</text>
+                }
+            });
+            $("#newsletter-email").on("keydown", function (event) {
+                if (event.keyCode == 13) {
+                    $("#newsletter-subscribe-button").trigger("click");
+                    return false;
+                }
+            });
+        });
+        </script>
+    </div>

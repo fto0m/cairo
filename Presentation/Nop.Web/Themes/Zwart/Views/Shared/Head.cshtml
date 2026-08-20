@@ -1,0 +1,50 @@
+﻿@*This is here so that if an error doesn't get throw if a theme doesn't have a Shared/Head.cshtml*@
+
+@using Nop.Core
+@using Nop.Core.Domain.Catalog
+@using Nop.Core.Infrastructure
+@using Nop.Services.Helpers
+@using Nop.Web.Framework.UI
+
+@inject CatalogSettings catalogSettings
+@inject IThemeContext themeContext
+@inject IStoreContext storeContext
+@inject IUserAgentHelper userAgentHelper
+@inject INopFileProvider nopFileProvider
+@{
+    Layout = "";
+    var themeName = await themeContext.GetWorkingThemeNameAsync();
+    var supportRtl = await Html.ShouldUseRtlThemeAsync();
+    var storeId = storeContext.GetCurrentStore().Id;
+
+    var customCssPath = $"~/Themes/{themeName}/Content/css/styles.default-{storeId}.css";
+
+    if (nopFileProvider.FileExists(nopFileProvider.MapPath(customCssPath)))
+        NopHtml.AppendCssFileParts(customCssPath, excludeFromBundle: true);
+    //add main CSS file
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/color-one.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/responsive{(supportRtl ? ".rtl" : "")}.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/styles{(supportRtl ? ".rtl" : "")}.css");
+
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/all-fonts.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/animate.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/bootstrap.min{(supportRtl ? ".rtl" : "")}.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/font-awesome.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/icons.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/owl.carousel.min{(supportRtl ? ".rtl" : "")}.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/owl.carousel.min.css");
+
+    //NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/rtl.css");
+
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/template{(supportRtl ? ".rtl" : "")}.css");
+    NopHtml.AppendCssFileParts($"~/Themes/{themeName}/Content/css/print.css");
+
+    //add swiper css file
+    if (catalogSettings.DisplayAllPicturesOnCatalogPages)
+    {
+        NopHtml.AppendCssFileParts("~/lib_npm/swiper/swiper-bundle.min.css");
+    }
+
+    //add jQuery UI css file
+    NopHtml.AppendCssFileParts("~/lib_npm/jquery-ui-dist/jquery-ui.min.css");
+}

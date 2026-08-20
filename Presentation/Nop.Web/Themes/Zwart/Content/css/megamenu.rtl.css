@@ -1,0 +1,165 @@
+/* Zwart Theme Mega Menu Styles - RTL Version */
+
+/* Desktop Menu Styles */
+#navbarSupportedContent-4 {
+    text-align: right;
+}
+
+.header-menu .navbar-nav > .dropdown > a:after {
+    margin-right: 5px;
+    margin-left: 0;
+}
+
+/* Dropdown Menu Styles */
+.top-nav-container .navbar .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
+.top-nav-container .navbar .dropdown-menu .sublist.first-level .nav-item {
+    text-align: right;
+}
+
+.header-menu .second-dropdown li a {
+    text-align: right;
+}
+
+/* Desktop - Show subcategory images above the name (RTL) */
+@media (min-width: 992px) {
+    .second-dropdown .nav-item > a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .second-dropdown .nav-item > a img,
+    .second-dropdown .subcategory-image {
+        display: block !important;
+        width: 100%;
+        max-width: 150px;
+        height: auto;
+        margin-bottom: 10px;
+        border: 1px solid #eee;
+    }
+    
+    .second-dropdown .nav-item > a span {
+        display: block;
+        text-align: center;
+    }
+    
+    /* Subcategory item layout */
+    .second-dropdown .subcategory-item {
+        text-align: center;
+        margin: 10px;
+    }
+    
+    .second-dropdown .subcategory-item > a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Mobile - Hide subcategory images (RTL) */
+@media (max-width: 991px) {
+    .second-dropdown .nav-item > a img,
+    .second-dropdown .subcategory-image,
+    .mm-navbar .nav-item img,
+    .mm-navbar .mm-nav-item img,
+    .mm-navbar img {
+        display: none !important;
+    }
+}
+
+.dropdown-menu-right ul li ul a span {
+    text-align: right;
+}
+
+/* Mobile Menu - Right Sidebar (RTL) */
+@media (max-width: 991px) {
+    .header-menu .mm-navbar {
+        text-align: right;
+        transition: right 0.3s ease-in-out, top 0s;
+        left: auto;
+        right: -400px;
+    }
+
+    .header-menu .mm-navbar.closed {
+        left: auto !important;
+        right: -400px !important;
+    }
+
+    .header-menu .mm-navbar:not(.closed),
+    .header-menu .mm-navbar.open {
+        left: auto !important;
+        right: 0 !important;
+    }
+
+    .menu-toggle-btn {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .mobile-logo {
+        margin-right: 10px;
+        margin-left: 0;
+    }
+
+    .header-upper {
+        margin-right: auto !important;
+        margin-left: 0 !important;
+    }
+
+    .mm-navbar #close-menu {
+        right: auto;
+        left: 10px;
+    }
+
+    /* Sublist Toggle - RTL */
+    .sublist-toggle {
+        border: none;
+        right: auto;
+        left: 0;
+    }
+
+    .mm-navbar .sublist-toggle {
+        border: none;
+    }
+
+    /* Link wrapper for RTL - keep default row direction */
+    /* In RTL, flex-row naturally puts first item on right, last item on left */
+    /* So: [Menu Text on right] [Toggle on left] */
+    .mm-navbar .mm-nav-link-wrapper {
+        flex-direction: row;
+    }
+
+    .mm-navbar .mm-nav-link-wrapper .mm-nav-link {
+        padding-left: 10px;
+        padding-right: 0;
+        text-align: right;
+    }
+
+    /* Mobile Sublist Styles - RTL (dropdown below parent) */
+    .mm-navbar li.mm-nav-item.has-submenu .sublist {
+        left: 0;
+        right: 0;
+    }
+
+    .mm-navbar li.mm-nav-item.has-submenu .sublist li a,
+    .mm-navbar li.mm-nav-item.has-submenu .sublist li .mm-nav-link-wrapper .mm-nav-link {
+        padding: 12px 30px 12px 20px;
+    }
+
+    /* Nested sublist (third level) - RTL */
+    .mm-navbar li.mm-nav-item.has-submenu .sublist .sublist li a,
+    .mm-navbar li.mm-nav-item.has-submenu .sublist .sublist li .mm-nav-link-wrapper .mm-nav-link {
+        padding-right: 45px;
+        padding-left: 20px;
+    }
+
+    .top-nav-container .navbar .navbar-nav {
+        padding-left: 23px;
+        padding-right: 0;
+    }
+}

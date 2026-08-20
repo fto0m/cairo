@@ -1,0 +1,173 @@
+﻿@model AddressModel
+@if (Model.CountryEnabled && Model.StateProvinceEnabled)
+{
+    //we don't move this script to the footer as it's used in Ajax requests where footer is not available
+    <script>
+        $(document).ready(function () {
+            $("#@Html.IdFor(model => model.CountryId)").on('change', function () {
+            var selectedItem = $(this).val();
+            var ddlStates = $("#@Html.IdFor(model => model.StateProvinceId)");
+            var statesProgress = $("#states-loading-progress");
+            statesProgress.show();
+                $.ajax({
+                cache: false,
+                    type: "GET",
+                        url: "@(Url.RouteUrl(NopRouteNames.Ajax.GET_STATES_BY_COUNTRY_ID))",
+                    data: { "countryId": selectedItem, "addSelectStateItem": "true" },
+                    success: function (data) {
+                    ddlStates.html('');
+                        $.each(data, function (id, option) {
+                        ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                    statesProgress.hide();
+                },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                    statesProgress.hide();
+                }
+            });
+        });
+    });
+    </script>
+}
+<input asp-for="Id" type="hidden"/>
+<div class="edit-address">
+    <div class="inputs">
+        @*<label asp-for="FirstName" asp-postfix=":"></label>*@
+        <input asp-for="FirstName" class="w-100" placeholder="First Name" />
+        <nop-required />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <div class="inputs">
+        @*<label asp-for="LastName" asp-postfix=":"></label>*@
+        <input asp-for="LastName" placeholder="LastName" class="w-100" />
+        <nop-required />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div class="inputs">
+        @*<label asp-for="Email" asp-postfix=":"></label>*@
+        <input asp-for="Email" placeholder="Email" class="w-100" />
+        <nop-required />
+        <span asp-validation-for="Email"></span>
+    </div>
+    @if (Model.CompanyEnabled)
+    {
+        <div class="inputs">
+            @*<label asp-for="Company" asp-postfix=":"></label>*@
+            <input asp-for="Company" placeholder="Company" class="w-100" />
+            @if (Model.CompanyRequired)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="Company"></span>
+        </div>
+    }
+    @if (Model.CountryEnabled)
+    {
+        <div class="inputs">
+            @*<label asp-for="CountryId" asp-postfix=":"></label>*@
+            <select class="w-100" asp-for="CountryId" asp-items="Model.AvailableCountries"></select>
+            <nop-required />
+            <span asp-validation-for="CountryId"></span>
+        </div>
+    }
+
+    @if (Model.CountryEnabled && Model.StateProvinceEnabled)
+    {
+        <div class="inputs">
+            @*<label asp-for="StateProvinceId" asp-postfix=":"></label>*@
+            <select class="w-100" asp-for="StateProvinceId" asp-items="Model.AvailableStates"></select>
+            <span id="states-loading-progress" style="display: none;" class="please-wait">@T("Common.Wait")</span>
+            <span asp-validation-for="StateProvinceId"></span>
+        </div>
+    }
+    @if (Model.CountyEnabled)
+    {
+        <div class="inputs">
+            @*<label asp-for="County" asp-postfix=":"></label>*@
+            <input asp-for="County" class="w-100" placeholder="County" />
+            @if (Model.CountyRequired)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="County"></span>
+        </div>
+    }
+    @if (Model.CityEnabled)
+    {
+        <div class="inputs">
+             @*<label asp-for="City" asp-postfix=":"></label>*@
+            <input asp-for="City" class="w-100" placeholder="City"/>
+            @if (Model.CityRequired)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="City"></span>
+        </div>
+    }
+    @if (Model.StreetAddressEnabled)
+    {
+        <div class="inputs">
+            @*<label asp-for="Address1" asp-postfix=":"></label>*@
+            <input asp-for="Address1" class="w-100" placeholder="Address1"/>
+            @if (Model.StreetAddressRequired)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="Address1"></span>
+        </div>
+    }
+    @if (Model.StreetAddress2Enabled)
+    {
+        <div class="inputs">
+             @*<label asp-for="Address2" asp-postfix=":"></label>*@
+            <input asp-for="Address2" class="w-100" placeholder="Address2"/>
+            @if (Model.StreetAddress2Required)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="Address2"></span>
+        </div>
+    }
+    @if (Model.ZipPostalCodeEnabled)
+    {
+        <div class="inputs">
+             @*<label asp-for="ZipPostalCode" asp-postfix=":"></label>*@
+            <input asp-for="ZipPostalCode" class="w-100" placeholder="Postal Code" />
+            @if (Model.ZipPostalCodeRequired)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="ZipPostalCode"></span>
+        </div>
+    }
+    @if (Model.PhoneEnabled)
+    {
+        <div class="inputs">
+            @*<label asp-for="PhoneNumber" asp-postfix=":"></label>*@
+            <input asp-for="PhoneNumber" placeholder="Phone Number" class="w-100" />
+            @if (Model.PhoneRequired)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="PhoneNumber"></span>
+        </div>
+    }
+    @if (Model.FaxEnabled)
+    {
+        <div class="inputs">
+           @* <label asp-for="FaxNumber" asp-postfix=":"></label>*@
+            <input asp-for="FaxNumber" placeholder="Fax Number" class="w-100" />
+            @if (Model.FaxRequired)
+            {
+                <nop-required />
+            }
+            <span asp-validation-for="FaxNumber"></span>
+        </div>
+    }
+    @if (Model.CustomAddressAttributes.Count > 0)
+    {
+        @await Html.PartialAsync("_AddressAttributes", Model.CustomAddressAttributes)
+    }
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.AddressBottom, additionalData = Model })
+</div>

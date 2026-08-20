@@ -1,0 +1,43 @@
+﻿@model CustomerNavigationModel
+<div class="block block-account-navigation">
+
+    <div class="categories-container mb-3">
+
+        <div class="accordion md-accordion" id="accordionEx3" role="tablist" aria-multiselectable="true">
+
+
+            <div class="block block-popular-tags m-0">
+
+                <div class="border-0" role="tab" id="headingOne7">
+
+                    <div class="border-0 p-0" role="tab" id="headingOne8">
+                        <a class="" data-toggle="collapse" data-parent="#accordionEx3" href="#collapseOne8" aria-expanded="true" aria-controls="collapseOne7">
+
+                            <h5 class="mb-0 collapsed"> <strong>@T("Account.Navigation")</strong>  <i class="fa fa-angle-down rotate-icon float-right"></i> </h5>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="collapseOne8" class="collapse show" role="tabpanel" aria-labelledby="headingOne7" data-parent="#accordionEx3">
+
+                    <div class="card-body">
+
+                        <ul class="list">
+                            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.AccountNavigationBefore, additionalData = Model  })
+                            @foreach (var item in Model.CustomerNavigationItems)
+            {
+                                <li class="@item.ItemClass">
+                                    <a href="@Url.RouteUrl(item.RouteName)" class="@(Model.SelectedTab == item.Tab ? "active" : "inactive")"> @(item.Title) </a>
+                                </li>
+                            }
+                            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.AccountNavigationAfter, additionalData = Model  })
+                        </ul>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

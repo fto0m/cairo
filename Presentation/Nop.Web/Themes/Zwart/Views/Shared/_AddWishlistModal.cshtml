@@ -1,0 +1,51 @@
+@model int
+<div id="addWishlistModal_@Model" title="@T("Wishlist.AddNewWishlist")" style="display:none;">
+    <div class="add-wishlist-content">
+        <input type="text" id="wishlistName_@Model" class="wishlist-name-input" placeholder="@T("Wishlist.EnterWishlistName")" />
+        <button type="button" class="wishlist-add-custom-button button-1" onclick="addWishlist(@Model, this)">@T("Common.OK")</button>
+    </div>
+</div>
+<script asp-location="Footer">
+    function showAddWishlistModal(productId) {
+        $('#addWishlistModal_' + productId).dialog({
+            modal: true,
+            width: 400,
+            closeOnEscape: true,
+            draggable: true,
+            open: function() {
+                $(this).parent().css('z-index', 100020);
+            },
+            close: function() {
+                $(this).find('input[id^="wishlistName_"]').val('');
+            }
+        });
+    }
+
+    function closeAddWishlistModal(productId) {
+        $('#addWishlistModal_' + productId).dialog('close');
+    }
+
+    function addWishlist(productId, button) {
+        var $modal = $(button).closest('.ui-dialog-content');
+        if (!$modal.length) {
+            $modal = $('#addWishlistModal_' + productId);
+        }
+
+        var $input = $modal.find('input[id^="wishlistName_"]').first();
+        var wishlistName = ($input.val() || '').trim();
+
+        if (!wishlistName) {
+            alert('@T("Wishlist.NameRequired")');
+            $input.focus();
+            return;
+        }
+
+        AjaxCart.createCustomWishlist('@Url.RouteUrl(NopRouteNames.Ajax.ADD_WISHLIST)', wishlistName, productId);
+
+        if ($modal.hasClass('ui-dialog-content')) {
+            $modal.dialog('close');
+        } else {
+            $modal.hide();
+        }
+    }
+</script>

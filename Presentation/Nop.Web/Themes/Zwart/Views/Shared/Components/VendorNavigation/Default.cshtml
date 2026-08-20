@@ -1,0 +1,44 @@
+﻿@model VendorNavigationModel
+
+@using Nop.Core.Domain.Vendors
+
+@if (Model.Vendors.Count > 0)
+{
+    <div class="block block-vendor-navigation">
+        <div class="categories-container mb-3">
+               <div class="block block-category-navigation m-0 accordion md-accordion" id="vendor-category" role="tablist" aria-multiselectable="true">
+                <div class="border-0" role="tab" id="headingOne1">
+                    <div class="border-0 p-0" role="tab" id="heading11">
+                        <a class="" data-toggle="collapse"  href="#collapse11" aria-expanded="true" aria-controls="collapse11">
+                            <h5 class="mb-0">  <strong>@T("Vendors")</strong> <i class="fa fa-angle-down rotate-icon float-right"></i> </h5>
+                        </a>
+                    </div>
+
+                </div>
+                <div id="collapse11" class="collapse show"  aria-labelledby="heading11" data-parent="#vendor-category">
+
+                            <div class="card-body p-0">
+                                <div class="listbox">
+                                    <ul class="list">
+                                        @foreach (var vendor in Model.Vendors)
+                                        {
+                                    <li>
+                                        <a href="@(await NopUrl.RouteGenericUrlAsync<Vendor>(new { SeName = vendor.SeName }))">@vendor.Name</a>
+                                            </li>
+                                        }
+                                    </ul>            
+                                    @if (Model.TotalVendors > Model.Vendors.Count)
+                                    {
+                                        <div class="view-all">
+                                    <a href="@Url.RouteUrl(NopRouteNames.General.VENDORS)">@T("Vendors.ViewAll")</a>
+                                        </div>
+                                    }
+                                </div>
+                        </div>
+                </div>
+
+
+        </div>
+        </div>
+    </div>
+}

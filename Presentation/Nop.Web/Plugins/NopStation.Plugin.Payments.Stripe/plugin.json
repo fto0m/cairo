@@ -1,0 +1,16 @@
+{
+  "Group": "Nop-Station",
+  "FriendlyName": "Stripe",
+  "SystemName": "NopStation.Plugin.Payments.Stripe",
+  "Version": "4.90.1.0",
+  "SupportedVersions": [
+    "4.90"
+  ],
+  "Author": "Nop-Station Team",
+  "DisplayOrder": 1,
+  "FileName": "NopStation.Plugin.Payments.Stripe.dll",
+  "Description": "This plugin enables stripe gateway payments.",
+  "DependsOnSystemNames": [
+    "NopStation.Core"
+  ]
+}

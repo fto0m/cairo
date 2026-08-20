@@ -1,0 +1,104 @@
+﻿@using Nop.Core
+
+@inject IWorkContext workContext
+@inject Nop.Services.Configuration.ISettingService settingService
+@inject Nop.Services.Media.IPictureService pictureService
+@{
+    var pictureId = await settingService.GetSettingByKeyAsync<int>("ZwartSettings.BreadcrumbPictureId");
+    var breadcrumbPictureUrl = await pictureService.GetPictureUrlAsync(pictureId);
+}
+
+@{
+    Layout = "_Root.Head";
+}
+@await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BodyStartHtmlTagAfter })
+@{ await Html.RenderPartialAsync("_Notifications"); }
+@{ await Html.RenderPartialAsync("_JavaScriptDisabledWarning"); }
+@{ await Html.RenderPartialAsync("_OldInternetExplorerWarning"); }
+
+<div class="master-wrapper-page">
+    <header class="header-container">
+        <div class="header-top clearfix">
+            <div class="row">
+                <div class="col-md-4 d-none d-md-block">
+                    <div class="header-selectors float-left">
+                        @await Component.InvokeAsync(typeof(TaxTypeSelectorViewComponent))
+                        @await Component.InvokeAsync(typeof(CurrencySelectorViewComponent))
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="admin-links">
+                            @await Component.InvokeAsync(typeof(AdminHeaderLinksViewComponent))
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 d-none d-md-block">
+                    <div class="header-selectors float-right" id="languageCurrency">
+                            @await Component.InvokeAsync(typeof(LanguageSelectorViewComponent))
+                            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderSelectors })
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="top-nav-container">
+
+            <nav class="navbar navbar-expand-lg navbar-dark info-color">
+                @await Html.PartialAsync("_Header")
+
+                <script asp-location="Footer">
+                    AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart');
+                </script>
+
+                <div class="d-flex m-0 ml-lg-auto align-items-center justify-content-between w-100 mobile-menu-wrapper">
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="menu-toggle-btn d-lg-none" id="mobile-menu-toggle" onclick="return toggleMobileMenu(event)" aria-label="Toggle menu">
+                            <span class="icon-nav"></span>
+                        </button>
+                        <div class="d-inline-block d-lg-none main-logo mobile-logo">
+                            @await Component.InvokeAsync(typeof(LogoViewComponent))
+                        </div>
+                    </div>
+                    <div class="header-menu d-none d-lg-block">
+                       @await Component.InvokeAsync(typeof(MainMenuViewComponent))
+                    </div>
+                    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderBefore })
+                    <div class="header-upper ml-auto">
+                        <div class="header-links-wrapper">
+                            @await Component.InvokeAsync(typeof(HeaderLinksViewComponent))
+                        </div>
+                    </div>
+                </div>
+                @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderMiddle })
+            </nav>
+        </div>
+    </header>
+
+    @*<div class="master-wrapper-content">*@
+    <div class="">
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ContentBefore })
+
+        @if (IsSectionDefined("Breadcrumb"))
+        {
+            @RenderSection("Breadcrumb")
+        }
+        <div class="master-column-wrapper">
+            @RenderBody()
+        </div>
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ContentAfter })
+    </div>
+    @await Component.InvokeAsync(typeof(FooterViewComponent))
+</div>
+
+@await Component.InvokeAsync(typeof(EuCookieLawViewComponent))
+@await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BodyEndHtmlTagBefore })
+
+@* @if (!string.IsNullOrEmpty(breadcrumbPictureUrl))
+{
+    <style>
+        .products-list-header {
+            background-image: url('@breadcrumbPictureUrl');
+        }
+    </style>
+} *@

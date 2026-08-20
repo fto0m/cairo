@@ -1,0 +1,148 @@
+
+/*********************New-color*********************/
+/*********************New-color*********************/
+.category-add-text, .featured-box-text,
+.theme-custom .nivo-controlNav a.active,
+.products-box-icon i a,
+.go-to-cart-button, .scrollup, .estimate-shipping-button,
+.ads-slider-container .owl-carousel button.owl-dot.active,
+.go-to-cart-button, .scrollup, .estimate-shipping-button,
+.ui-state-default, .ui-widget-content .ui-state-default,
+.login-nav-box,
+.search-box .search-box-button,
+.mini-shopping-cart input[type="button"],
+.wishlist-content .update-wishlist-button,
+.wishlist-content .wishlist-add-to-cart-button,
+.cart-collaterals .coupon-code input[type="submit"],
+.account-page .button-1,
+.contact-page .button-1,
+.search-input .button-1,
+.apply-vendor-page .button-1,
+.newsletter-subscribe-button:hover,
+.checkout-page .button-1,
+.ui-slider .ui-slider-range,
+.pager li span,
+.slider-container button.owl-dot.active,
+.add-to-cart-wrapper .btn-quick-view,
+.cart-quantity,
+.slider-container .slider-btn,
+.home-page-slider-2 .slider-caption .slider-btn,
+.top-nav-container .header-links .navbar-nav .search-box-dropdown .search-box-button,
+.pager li a:hover,
+.home-page-slider-2.owl-carousel .owl-nav button.owl-next,
+.home-page-slider-2.owl-carousel .owl-nav button.owl-prev,
+.latest-product .owl-carousel .owl-nav button.owl-next,
+.latest-product .owl-carousel .owl-nav button.owl-prev,
+.thumb-list-slider .owl-carousel .owl-nav button.owl-prev,
+.thumb-list-slider .owl-carousel .owl-nav button.owl-next,
+.mfp-close-btn-in .mfp-close,
+.manufacturers-content .owl-carousel .owl-nav button.owl-prev,
+.manufacturers-content .owl-carousel .owl-nav button.owl-next,
+.manufactures-area .owl-carousel .owl-nav button.owl-prev,
+.manufactures-area .owl-carousel .owl-nav button.owl-next,
+.write-review .button-1,
+.registration-page .button-1,
+.slider-container .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev,
+.slider-container .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-next,
+.pagination-box button:hover,
+.owl-nav button:hover,
+.owl-carousel .owl-nav button.owl-prev:hover,
+.owl-carousel .owl-nav button.owl-next:hover,
+.advanced-products-titel,
+.newsletter-email .newsletter-subscribe-button,
+.order-details-page .actions input:first-child {
+    background: #0c90ea;
+}
+.top-nav-container .navbar ul li .nav-link:not(.login-button):hover,
+.top-nav-container .navbar ul li.active a:not(.login-button),
+.top-nav-container .navbar .dropdown-menu a:not(.login-button):hover,
+.featured-products-container .owl-carousel .owl-nav button.owl-next,
+.featured-products-container .owl-carousel .owl-nav button.owl-prev,
+.featured-products-container .owl-carousel button.owl-dot,
+.ads-slider-container .owl-carousel .owl-nav button.owl-next,
+.ads-slider-container .owl-carousel .owl-nav button.owl-prev,
+.products-gallery .owl-carousel .owl-nav button.owl-next,
+.products-gallery .owl-carousel .owl-nav button.owl-prev,
+.pagination-box button,
+.related-products .owl-carousel .owl-nav button.owl-next,
+.related-products .owl-carousel .owl-nav button.owl-prev,
+.offer-box-content h2,
+.products-gallery h2 span, .blogs-container h2 span, .read-mre-box a,
+.footer-nav-header a:hover i,
+.products-box .price,
+.products-list-header-body ul li strong.active, .products-list-header-body ul li strong,
+.categories-container .card-body ul li a:hover,
+.item-box .product-title a:hover,
+.block .view-all a,
+.block .list a:hover,
+.products-description .nav-tabs li a.active,
+.products-description .nav-tabs li a:hover,
+.cart-total .order-total,
+.register-container input[type="radio"]:checked + label::before,
+.register-container input[type="checkbox"]:checked + label::before,
+.follow-us .social a:hover,
+.compare-products-table .product-name td a:hover,
+.footer-nav li a:hover::before,
+.blog-page .tags a,
+.blogpost-page .tags a,
+.custom-checkbox:checked + label::before,
+.home-page-slider-2 .slider-caption h2,
+.blog-news-area .single-blog .blog-link,
+.blog-news-area .single-news .blog-link,
+.post-title:hover, .news-title:hover,
+.blog-news-area .single-blog ul li a:hover,
+.blog-news-area .single-news ul li a:hover,
+.overview .product-price,
+.products-description .nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active,
+.products-description .nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link:hover,
+.advanced-products-tab .owl-carousel .owl-nav button.owl-prev,
+.advanced-products-tab .owl-carousel .owl-nav button.owl-next,
+.copyright-container a:hover, .footer-nav-header a:hover {
+    color: #0c90ea;
+}
+    .read-mre-box::before,
+    .blogs-container h2::before,
+    .thumb-list-slider .title h2::before,
+    .global-header .header-menu .second-dropdown > ul > li > a,
+    .products-list-header-body,
+    .global-header .header-menu .second-dropdown > ul > li > a::after,
+    .blog-news-area .single-news .blog-link::before,
+    .blog-news-area .single-blog .blog-link::before {
+        border-bottom-color: #0c90ea;
+    }
+.sublist .active a {
+    border-left-color: #0c90ea;
+}
+.cart-collaterals .coupon-code input[type="submit"],
+.ui-slider .ui-slider-range {
+    border-color: #0c90ea;
+}
+.top-nav-container .navbar .dropdown-menu {
+    border-top-color: #fff;
+}
+.advanced-products-tab .owl-carousel .owl-nav button.owl-prev,
+.advanced-products-tab .owl-carousel .owl-nav button.owl-next {
+  border: solid 1px #0c90ea;
+  background: #007bff;
+}
+.category-add a:hover .category-add-text,
+.products-box-icon i a:hover,
+.go-to-cart-button:hover,
+.account-page .button-1:hover,
+.search-input .button-1:hover,
+.wishlist-content .update-wishlist-button:hover,
+.wishlist-content .wishlist-add-to-cart-button:hover,
+.mini-shopping-cart input[type="button"]:hover,
+.contact-page .button-1:hover,
+.apply-vendor-page .button-1:hover,
+.top-nav-container .navbar ul li .login-nav-box:hover,
+.checkout-page .button-1:hover,
+.top-nav-container .navbar,
+.cart th {
+    background: #1d1d1d;
+}
+
+/*********************New-color*********************/
+/*********************New-color*********************/

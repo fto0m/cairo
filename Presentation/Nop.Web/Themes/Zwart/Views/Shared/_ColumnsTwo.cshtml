@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "_Root";
+}
+@{
+    //current category ID
+    var currentCategoryId = 0;
+    if (Url.ActionContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.ActionContext.RouteData.Values["action"].ToString().Equals("category", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.ActionContext.RouteData.Values["categoryId"].ToString());
+    }
+
+
+    //current manufacturer ID
+    var currentManufacturerId = 0;
+    if (Url.ActionContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.ActionContext.RouteData.Values["action"].ToString().Equals("manufacturer", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentManufacturerId = Convert.ToInt32(Url.ActionContext.RouteData.Values["manufacturerId"].ToString());
+    }
+
+
+    //current product ID
+    var currentProductId = 0;
+    if (Url.ActionContext.RouteData.Values["controller"].ToString().Equals("product", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.ActionContext.RouteData.Values["action"].ToString().Equals("productdetails", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentProductId = Convert.ToInt32(Url.ActionContext.RouteData.Values["productId"].ToString());
+    }
+}
+@if (IsSectionDefined("Breadcrumb"))
+{
+    @section Breadcrumb {
+    @RenderSection("Breadcrumb")
+    }
+}
+@if (IsSectionDefined("H1"))
+{
+    @RenderSection("H1")
+}
+@if (IsSectionDefined("heading"))
+{
+    @RenderSection("heading")
+}
+
+<div class="custom-container-fluid products-body-content mt-4">
+    <div class="row">
+        <div class="side-2 col-md-4 col-lg-3">
+
+
+
+            <div class="title mobile-filter-view" id="headingFilter">
+                <button class="btn btn-block collapsed" type="button" data-toggle="collapse" data-target="#mobile-filter-content" aria-expanded="false" aria-controls="headingFilter">
+                    Filters  <i class="fa fa-angle-down rotate-icon float-right"></i>
+                </button>
+            </div>
+            <div class="listbox collapse show" id="mobile-filter-content" aria-labelledby="headingFilter">
+                <div class="nop-ajax-filters">
+
+                    @*<div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                    <div class="block block-category-navigation border-0 m-0">
+                    <div class="border-0 mb-3" role="tab" id="headingOne1">
+                    <div class="border-0 p-0" role="tab" id="headingOnenew">
+                    <h5 class="mb-0 main-filter-button" data-toggle="collapse" data-parent="#accordionEx1" data-target="#collapseOne12" aria-expanded="true" aria-controls="collapseOne12">
+                    <strong>Filters</strong>
+                    <i class="fa fa-angle-down rotate-icon float-right"></i>
+                    </h5>
+                    </div>
+                    </div>
+
+                    <div id="collapseOne12" class="collapse px-2 p-0" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx1" style="">*@
+
+                    @if (IsSectionDefined("left"))
+                    {
+                        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.LeftSideColumnBefore })
+                        @await RenderSectionAsync("left")
+                        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.LeftSideColumnAfter })
+                    }
+                    else
+                    {
+                        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.LeftSideColumnBefore })
+                        @await RenderSectionAsync("CatalogFilters", false)
+                    }
+                </div>
+            </div>
+            @await Component.InvokeAsync(typeof(CategoryNavigationViewComponent), new { currentCategoryId = currentCategoryId, currentProductId = currentProductId })
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.LeftSideColumnAfterCategoryNavigation })
+            @await Component.InvokeAsync(typeof(ManufacturerNavigationViewComponent), new { currentManufacturerId = currentManufacturerId })
+            @await Component.InvokeAsync(typeof(VendorNavigationViewComponent))
+            @await Component.InvokeAsync(typeof(RecentlyViewedProductsBlockViewComponent), new { productThumbPictureSize = 64 })
+            @await Component.InvokeAsync(typeof(PopularProductTagsViewComponent))
+            @await Component.InvokeAsync(typeof(PollBlockViewComponent), new { systemKeyword = "LeftColumnPoll" })
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.LeftSideColumnAfter })
+
+        </div>
+        <div class="center-2 col-md-8 col-lg-9">
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.MainColumnBefore })
+            @RenderBody()
+            @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.MainColumnAfter })
+        </div>
+    </div>
+</div>
+

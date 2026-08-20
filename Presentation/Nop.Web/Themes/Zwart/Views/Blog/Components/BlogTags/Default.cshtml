@@ -1,0 +1,33 @@
+﻿@model BlogPostTagListModel
+@if (Model.Tags.Count > 0)
+{
+    <div class="block block-popular-blogtags">
+
+        <div class="categories-container">
+            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+                <div class="block block-category-navigation m-0">
+                    <div class="border-0" role="tab" id="headingOne51">
+                        <div class="border-0 p-0" role="tab" id="headingOnenew">
+                            <a class="" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne51" aria-expanded="true" aria-controls="collapseOne1">
+
+                                <h5 class="mb-0"> <strong>@T("Blog.TagCloud")</strong> <i class="fa fa-angle-down rotate-icon float-right"></i> </h5>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapseOne51" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                        <div class="card-body">
+                            <ul class="tags popular-tags-box">
+                                <li class="m-0">
+                                    @foreach (var item in Model.Tags)
+                                    {
+                                        <a href="@Url.RouteUrl(NopRouteNames.Standard.BLOG_BY_TAG, new { tag = item.Name })" style="font-size:@(Model.GetFontSize(item))%;">@item.Name</a>
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

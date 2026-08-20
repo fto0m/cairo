@@ -1,0 +1,65 @@
+﻿@model ManufacturerNavigationModel
+
+@using Nop.Core.Domain.Catalog
+
+@if (Model.Manufacturers.Count > 0)
+{
+    <div class="manufacturer-container categories-container  mb-3">
+        <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+            <div class="block block-manufacturer-navigation block-category-navigation m-0">
+                <div class="border-0" role="tab" id="headingOne1">
+                    <div class="border-0 p-0" role="tab" id="headingOnenew">
+                        <h5 class="mb-0" data-toggle="collapse" data-parent="#accordionEx" data-target="#collapseOne10" aria-expanded="true" aria-controls="collapseOne1">
+                            <strong>@T("Manufacturers")</strong>
+                            <i class="fa fa-angle-down rotate-icon float-right"></i>
+                        </h5>
+                    </div>
+                </div>
+
+                <div id="collapseOne10" class="collapse" role="tabpanel" aria-labelledby="headingOne1">
+                    <div class="card-body">
+                        <ul class="categories-list m-0 list-unstyled">
+                            @foreach (var manufacturer in Model.Manufacturers)
+                            {
+                                <li class="@(manufacturer.IsActive ? "active" : "inactive")">
+                                    <a href="@(await NopUrl.RouteGenericUrlAsync<Manufacturer>(new { SeName = manufacturer.SeName }))">@manufacturer.Name</a>
+                                </li>
+                            }
+                        </ul>
+
+                        @if (Model.TotalManufacturers > Model.Manufacturers.Count)
+                        {
+                            <div class="view-all">
+                                <a href="@Url.RouteUrl(NopRouteNames.General.MANUFACTURERS)">@T("Manufacturers.ViewAll")</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@*<div class="block block-manufacturer-navigation">
+        <div class="title">
+            <strong>@T("Manufacturers")</strong>
+        </div>
+        <div class="listbox">
+            <ul class="list">
+                @foreach (var manufacturer in Model.Manufacturers)
+                {
+                    <li class="@(manufacturer.IsActive ? "active" : "inactive")">
+                        <a href="@(await NopUrl.RouteGenericUrlAsync<Manufacturer>(new { SeName = manufacturer.SeName }))">@manufacturer.Name</a>
+                    </li>
+                }
+            </ul>
+            @if (Model.TotalManufacturers > Model.Manufacturers.Count)
+                {
+                <div class="view-all">
+                    <a href="@await NopUrl.RouteGenericUrlAsync("ManufacturerList")">@T("Manufacturers.ViewAll")</a>
+                </div>
+            }
+        </div>
+    </div>*@

@@ -1,0 +1,8 @@
+﻿<div class="d-none d-lg-inline-block text-center mr-4 main-logo">
+    @await Component.InvokeAsync(typeof(LogoViewComponent))
+</div>
+          
+ @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderAfter })
+
+                
+

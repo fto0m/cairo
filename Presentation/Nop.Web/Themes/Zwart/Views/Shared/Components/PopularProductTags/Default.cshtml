@@ -1,0 +1,93 @@
+﻿@model PopularProductTagsModel
+
+@using Nop.Core.Domain.Catalog
+
+@if (Model.Tags.Count > 0)
+{
+
+
+    <div class="categories-container mb-3">
+
+        <div class="accordion md-accordion" id="accordionEx3" role="tablist" aria-multiselectable="true">
+
+
+            <div class="block block-popular-tags m-0">
+
+                <div class="border-0" role="tab" id="headingOne7">
+
+                    <div class="border-0 p-0" role="tab" id="headingOne8">
+                        <a class="" data-toggle="collapse" data-parent="#accordionEx3" href="#collapseOne8" aria-expanded="true" aria-controls="collapseOne7">
+
+                            <h5 class="mb-0 collapsed"  data-toggle="collapse" data-parent="#accordionEx3" data-target="#collapseOne8" aria-expanded="true" aria-controls="collapseOne7"> <strong>@T("Products.Tags.Popular")</strong>  <i class="fa fa-angle-down rotate-icon float-right"></i> </h5>
+                        </a>
+                    </div>
+                </div>
+
+
+
+
+
+                <div id="collapseOne8" class="collapse" role="tabpanel" aria-labelledby="headingOne7" data-parent="#accordionEx3">
+
+                    <div class="card-body">
+                        <div class="tags">
+                            <ul class="popular-tags-box d-inline-block">
+                                @foreach (var item in Model.Tags)
+                                {
+                                    <li class="p-0 m-0"> <a href="@(await NopUrl.RouteGenericUrlAsync<ProductTag>(new { SeName = item.SeName }))" style="font-size:@(Model.GetFontSize(item))%;">@item.Name</a> </li>
+                                }
+                            </ul>
+                        </div>
+                        @if (Model.TotalTags > Model.Tags.Count)
+                        {
+                            <div class="view-all">
+                                <a href="@Url.RouteUrl(NopRouteNames.General.PRODUCT_TAGS)">@T("Products.Tags.Popular.ViewAll")</a>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    @*@if (Model.Tags.Count > 0)
+        {
+            <div class="block block-popular-tags">
+                <div class="title">
+                    <strong>@T("Products.Tags.Popular")</strong>
+                </div>
+                <div class="listbox">
+                    <div class="tags">
+                        <ul>
+                            @foreach (var item in Model.Tags)
+                            {
+                                <li><a href="@(await NopUrl.RouteGenericUrlAsync<ProductTag>(new { SeName = item.SeName }))" style="font-size:@(Model.GetFontSize(item))%;">@item.Name</a></li>
+                            }
+                        </ul>
+                    </div>
+                    @if (Model.TotalTags > Model.Tags.Count)
+                    {
+                        <div class="view-all">
+                            <a href="@await NopUrl.RouteGenericUrlAsync("ProductTagsAll")">@T("Products.Tags.Popular.ViewAll")</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }*@

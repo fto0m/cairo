@@ -1,0 +1,54 @@
+﻿@model SocialModel
+<div class="row no-gutters social-media-icon justify-content-center">
+    @if (!string.IsNullOrEmpty(Model.FacebookLink))
+    {
+        <div class="col-md-2">
+            <a class="facebook-box" href="@Model.FacebookLink" target="_blank">
+                <i class="fa fa-facebook pl-0" aria-hidden="true"></i>
+                On @T("Footer.FollowUs.Facebook")
+            </a>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.TwitterLink))
+    {
+        <div class="col-md-2">
+            <a class="twitter-box" href="@Model.TwitterLink" target="_blank">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                On @T("Footer.FollowUs.Twitter")
+            </a>
+        </div>
+    }
+
+    @if (Model.NewsEnabled)
+    {
+        <div class="col-md-2">
+            <a class="rss-box"
+               href="@Url.RouteUrl(NopRouteNames.Standard.NEWS_RSS, new { languageId = Model.WorkingLanguageId })">
+                <i class="fa fa-feed" aria-hidden="true"></i>
+                On @T("Footer.FollowUs.RSS")
+            </a>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.YoutubeLink))
+    {
+        <div class="col-md-2">
+            <a class="youtube-box" href="@Model.YoutubeLink" target="_blank">
+                <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                On @T("Footer.FollowUs.Youtube")
+            </a>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.InstagramLink))
+    {
+        <div class="col-md-2">
+            <a class="instagram-box" href="@Model.InstagramLink" target="_blank">
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+                On @T("Footer.FollowUs.Instagram")
+            </a>
+        </div>
+    }
+
+</div>

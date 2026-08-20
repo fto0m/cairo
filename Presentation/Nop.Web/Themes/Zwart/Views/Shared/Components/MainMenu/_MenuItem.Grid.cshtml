@@ -1,0 +1,45 @@
+@model MenuItemModel
+
+<li class="dropdown nav-item dropdown-menu-list">
+    <a class="btn btn-link dropdown-toggle" href="@(string.IsNullOrEmpty(@Model.Url) ? "#" : @Model.Url)" role="button" id="dropdownMenuLink-@Model.Id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @Model.Title
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-@Model.Id">
+        <div class="second-dropdown">
+            <ul class="row px-3 text-center">
+                @foreach (var item in Model.ChildrenItems)
+                {
+                    <li class="nav-item dropdown subcategory-item">
+                        <a href="@item.Url" class="@(string.IsNullOrEmpty(item.Url) ? "" : "nav-link text-ellipsis")">
+                            @if (item.Picture != null)
+                            {
+                                <img class="img-fluid subcategory-image" src="@item.Picture.ImageUrl" alt="@(item.Picture.AlternateText ?? item.Title)" title="@item.Picture.Title">
+                            }
+                            <span>@item.Title</span>
+                        </a>
+                        @if (item.ChildrenItems.Any())
+                        {
+                            <ul class="row px-3 text-left" type="circle">
+                                @foreach (var subItem in item.ChildrenItems)
+                                {
+                                    <li class="sub-menu-item">
+                                        <a class="nav-link text-ellipsis" href="@subItem.Url">
+                                            <span>@subItem.Title</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                    </li>
+                }
+            </ul>
+            @if (!string.IsNullOrEmpty(Model.Url))
+            {
+                <div class="all-manufacture text-center">
+                    <a href="@Model.Url">All @Model.Title</a>
+                </div>
+            }
+        </div>
+    </div>
+</li>

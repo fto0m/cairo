@@ -1,0 +1,28 @@
+.owl-stage-outer {
+  direction: ltr !important;
+}
+
+.quick-view-plugin-btn.btn.button-2.text-white {
+  margin-right: 4px;
+}
+
+.product-details-page .picture, .product-details-page .picture img {
+  width: 100%;
+}
+
+.product-selectors > div {
+  margin-left: 5px;
+}
+
+.mfp-content #quick-view-modal {
+  padding:0 !important;
+}
+
+.mfp-close-btn-in .mfp-close {
+   left:0 !important;
+   right:auto !important;
+}
+
+.specCheck {
+  margin-left: 8px;
+}

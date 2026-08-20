@@ -1,0 +1,94 @@
+﻿@model IList<BlogPostYearModel>
+
+@if (Model.Count > 0)
+{
+    <div class="block block-blog-archive">
+
+        <div class="categories-container">
+            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+                <div class="block block-category-navigation m-0">
+                    <div class="border-0" role="tab" id="headingOne1">
+                        <div class="border-0 p-0" role="tab" id="headingOnenew">
+                            <a class="" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+
+                                <h5 class="mb-0" data-toggle="collapse" data-parent="#accordionEx" data-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+                                    <strong>@T("Blog.Archive")</strong> <i class="fa fa-angle-down rotate-icon float-right"></i>
+                                </h5>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                        <div class="card-body">
+                            @{
+                                int yearId = 10;
+                            }
+                            <!-- start -->
+                            <div class="accordion" id="accordionYear-@yearId">
+
+                                <div class="border-0">
+                                    @foreach (var yearItem in Model)
+                                    {
+                                        <div class="py-2 px-0 border-0" id="headingYear-@yearId">
+
+                                            <a class="" data-toggle="collapse" data-parent="#accordionYear-@yearId" href="#collapseYear-@yearId" aria-expanded="false" aria-controls="collapseYear-@yearId">
+
+                                                <h5 class="mb-0" data-toggle="collapse" data-parent="#accordionExbg" data-target="#collapseOnebg" aria-expanded="true" aria-controls="collapseOnebg">
+                                                    <strong> @(yearItem.Year)</strong>  <i class="fa fa-angle-down rotate-icon float-right"></i>
+                                                </h5>
+                                            </a>
+                                        </div>
+
+                                        <div id="collapseYear-@yearId" class="collapse" aria-labelledby="headingYear-@yearId" data-parent="#accordionYear-@yearId">
+                                            <div class="card-body">
+                                                @foreach (var monthItem in yearItem.Months)
+                                                {
+                                                    <li class="month px-0">
+                                                        <a href="@Url.RouteUrl(NopRouteNames.Standard.BLOG_BY_MONTH, new { month = yearItem.Year + "-" + monthItem.Month })">
+                                                            @(new DateTime(yearItem.Year, monthItem.Month, 1).ToString("MMMM"))
+                                                            (@(monthItem.BlogPostCount))
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </div>
+                                        </div>
+                                        yearId++;
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*<div class="block block-blog-archive">
+    <div class="title">
+        <strong>@T("Blog.Archive")</strong>
+    </div>
+    <div class="listbox">
+        <ul class="list" id="blog-month-list">
+            @foreach (var yearItem in Model)
+            {
+                <li class="year">
+                    <strong class="number">@(yearItem.Year)</strong>
+                    <ul class="sublist" id="blog-year-@(yearItem.Year)">
+                        @foreach (var monthItem in yearItem.Months)
+                        {
+                            <li class="month">
+                                <a href="@Url.RouteUrl("BlogByMonth", new { month = yearItem.Year + "-" + monthItem.Month })">
+                                    @(new DateTime(yearItem.Year, monthItem.Month, 1).ToString("MMMM"))
+                                (@(monthItem.BlogPostCount))
+                            </a>
+                        </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+</div>*@

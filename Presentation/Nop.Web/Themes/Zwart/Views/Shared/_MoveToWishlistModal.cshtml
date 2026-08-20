@@ -1,0 +1,56 @@
+@model ProductToWishlistModel
+@{
+    var moveToCustomWishlistLink = Url.RouteUrl(NopRouteNames.Ajax.MOVE_PRODUCT_TO_CUSTOM_WISHLIST, new { productId = Model.ProductId });
+}
+
+<div id="moveToWishlistModal_@Model.ProductId" title="@T("Wishlist.SelectWishlist")" style="display:none;">
+    <div class="wishlist-buttons-container">
+        <button type="button" class="button-2 custom-wishlist-button add-new" onclick="showAddWishlistModal(@Model.ProductId);closeMoveToWishlistModal(@Model.ProductId);">
+            @T("Wishlist.AddCustomWishlist")
+        </button>
+        @foreach (var customWishlist in Model.CustomWishlistItems)
+        {
+            <button type="button" class="button-2 custom-wishlist-button" onclick="moveWishlistAndClose('@moveToCustomWishlistLink', @customWishlist.Id, @Model.ProductId);return false;">
+                @customWishlist.Name
+            </button>
+        }
+    </div>
+</div>
+
+@await Html.PartialAsync("_AddWishlistModal", Model.ProductId)
+<script asp-location="Footer">
+    var moveWishlistDialogs = moveWishlistDialogs || {};
+
+    function moveWishlistAndClose(link, wishlistId, productId) {
+        AjaxCart.moveproducttowishlist(link, wishlistId);
+        closeMoveToWishlistModal(productId);
+    }
+
+    function showMoveToWishlistModal(productId) {
+        var $dlg = $('#moveToWishlistModal_' + productId).first();
+        $dlg.dialog({
+            modal: true,
+            width: 400,
+            closeOnEscape: true,
+            draggable: true,
+            open: function() {
+                $(this).parent().css('z-index', 100010);
+            }
+        });
+        moveWishlistDialogs[productId] = $dlg;
+    }
+
+    function closeMoveToWishlistModal(productId) {
+        var $dlg = moveWishlistDialogs[productId] || $('#moveToWishlistModal_' + productId).first();
+        var initialized = $dlg.data('ui-dialog') != null;
+        if (!initialized) {
+            $dlg.dialog({ autoOpen: false });
+        }
+        try {
+            $dlg.dialog('close');
+        } catch(e) {
+            $dlg.hide();
+            $('.ui-dialog:has(#moveToWishlistModal_' + productId + ')').hide();
+        }
+    }
+</script>
